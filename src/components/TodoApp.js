@@ -1,10 +1,14 @@
-import Header from 'components/Header';
-import TodosLogic from 'components/TodoLogic';
+import './TodoApp.css';
+import TodoHeader from './TodoHeader';
+import TodoLogic from './TodoLogic';
 
-const TodoApp = () => (
-  <>
-    <Header />
-    <TodosLogic />
-  </>
-);
+function TodoApp() {
+  return (
+    <div className="todoApp">
+      <TodoHeader className="App-header" />
+      <TodoLogic />
+    </div>
+  );
+}
+
 export default TodoApp;

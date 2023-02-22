@@ -1,29 +1,64 @@
-import InputTodo from 'components/InputTodo';
-import TodosList from 'components/TodosList';
+import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import InputTodo from './InputTodo';
+import TodoList from './TodoList';
 
-const TodosLogic = () => {
-  const todos = [
-    {
-      id: 1,
-      title: 'Setup development environment',
-      completed: true,
-    },
-    {
-      id: 2,
-      title: 'Develop website and add content',
+const TodoLogic = () => {
+  const getStoredTasks = () => {
+    const tasks = JSON.parse(localStorage.getItem('tasks'));
+    return tasks || [];
+  };
+  const [todos, setTodos] = useState(getStoredTasks);
+
+  const handleChange = (id) => {
+    setTodos((prevState) => prevState.map((todo) => {
+      if (todo.id === id) {
+        return { ...todo, completed: !todo.completed };
+      }
+      return todo;
+    }));
+  };
+
+  const delTodo = (id) => {
+    setTodos([...todos.filter((todo) => todo.id !== id)]);
+  };
+
+  const addTodoItem = (title) => {
+    const newTodo = {
+      id: uuidv4(),
+      task: title,
       completed: false,
-    },
-    {
-      id: 3,
-      title: 'Deploy to live server',
-      completed: false,
-    },
-  ];
+    };
+    setTodos([...todos, newTodo]);
+  };
+
+  const updateTask = (updatedTask, id) => {
+    setTodos(todos.map((todo) => {
+      if (todo.id === id) {
+        return { ...todo, task: updatedTask };
+      }
+      return todo;
+    }));
+  };
+
+  useEffect(() => {
+    const stringifiedTodos = JSON.stringify(todos);
+    localStorage.setItem('tasks', stringifiedTodos);
+  }, [todos]);
+
   return (
-    <div>
-      <InputTodo />
-      <TodosList todosProps={todos} />
-    </div>
+    <>
+      <div className="todo-logic">
+        <InputTodo addTodoItem={addTodoItem} />
+        <TodoList
+          todoItems={todos}
+          handleChange={handleChange}
+          delTodo={delTodo}
+          updateTask={updateTask}
+        />
+      </div>
+    </>
   );
 };
-export default TodosLogic;
+
+export default TodoLogic;
