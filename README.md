@@ -162,7 +162,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 - [ ] **Use hooks**
 - [ ] **Create full website**
-- [ ] **Add calcultion history page**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
